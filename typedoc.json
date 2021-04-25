@@ -1,0 +1,27 @@
+{
+  "entryPoints": [
+    "./src/ejercicio-1/combat.ts",
+    "./src/ejercicio-1/pokedex.ts",
+    "./src/ejercicio-1/fighter.ts",
+    "./src/ejercicio-1/Pokemon.ts",
+    "./src/ejercicio-1/Marvel.ts",
+    "./src/ejercicio-1/DC.ts",
+    "./src/ejercicio-1/StarWars.ts",
+    "./src/ejercicio-1/DragonBall.ts",
+    "./src/ejercicio-2/isConvertible.ts",
+    "./src/ejercicio-2/fuerza.ts",
+    "./src/ejercicio-2/longitud.ts",
+    "./src/ejercicio-2/masa.ts",
+    "./src/ejercicio-2/temperatura.ts",
+    "./src/ejercicio-2/tiempo.ts",
+    "./src/ejercicio-2/velocidad.ts",
+    "./src/ejercicio-2/volumen.ts",
+    "./src/ejercicio-3/streamable.ts",
+    "./src/ejercicio-3/streamableSearch.ts",
+    "./src/ejercicio-3/basicStreamableCollection.ts",
+    "./src/ejercicio-3/series.ts",
+    "./src/ejercicio-3/peliculas.ts",
+    "./src/ejercicio-3/documentales.ts"
+  ],
+  "out": "./docs"
+}
