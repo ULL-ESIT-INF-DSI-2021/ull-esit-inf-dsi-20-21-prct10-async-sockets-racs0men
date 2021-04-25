@@ -1,14 +1,14 @@
 /**
  * @description Esta es la clase Note, representa una nota. 
  */
-export class Note {
+ export class Note {
 
   public user: string;
   public title: string;
   public body: string;
   public color: string;
 
-    /**
+  /**
    * @description Constructor de la clase Note
    * @param user Nombre del usuario que ha creado la nota.
    * @param title Nombre de la nota.
@@ -22,3 +22,4 @@ export class Note {
     this.color = color;
   }
 }
+

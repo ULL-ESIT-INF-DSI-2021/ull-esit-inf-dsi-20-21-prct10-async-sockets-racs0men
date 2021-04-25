@@ -80,12 +80,10 @@ yargs.command({
     if (typeof argv.user === 'string') {
       if (fs.existsSync('./src/ejercicio/users')) {
         if (fs.existsSync(`./src/ejercicio/users/${argv.user}`)) {
-          let directorios = fs.readdirSync(`./src/ejercicio/users/${argv.user}`);
-          directorios.forEach(nombreFichero => {
+          let directorio = fs.readdirSync(`./src/ejercicio/users/${argv.user}`);
+          directorio.forEach(nombreFichero => {
             let entrada = fs.readFileSync(`./src/ejercicio/users/${argv.user}/${nombreFichero}`);
             let toJson: Note = JSON.parse(entrada.toString());
-            //let titulo: string = objeto.getTitle();
-            //console.log(toJson.title);
 
             switch (toJson.color) {
               case 'red':
@@ -142,7 +140,6 @@ yargs.command({
           if (fs.existsSync(`./src/ejercicio/users/${argv.user}/${argv.title}.json`)) {
             let fichero = fs.readFileSync(`./src/ejercicio/users/${argv.user}/${argv.title}.json`);
             let toJson: Note = JSON.parse(fichero.toString());
-            //let titulo: string = objeto.getTitle();
 
             switch (toJson.color) {
               case 'red':
@@ -179,8 +176,8 @@ yargs.command({
 });
 
 /**
- * @description Comando de Yargs para la opción remove,el cual
- * elimina una nota nueva de la carpeta del usuario especificado.
+ * @description Comando de Yargs para la opción remove, el cual
+ * elimina una nota de la carpeta del usuario especificado.
  * Este comando espera 2 parámetros: user y title.
  */
 yargs.command({
