@@ -43,9 +43,9 @@ yargs.command({
         if ((typeof argv.pipe === "string") && (typeof argv.fichero === "string")) {
             let comando = [];
             if ((argv.pipe == "si") || (argv.pipe == "Si"))
-                funcionConPipe(comando, argv.fichero);
+                conPipe(comando, argv.fichero);
             else if ((argv.pipe == "no") || (argv.pipe == "No"))
-                funcionSinPipe(comando, argv.fichero);
+                sinPipe(comando, argv.fichero);
             else
                 console.log(chalk.rgb(255, 0, 0).inverse("\nERROR: Ha introducido mal el parámetro pipe, por favor, introduzca Si o No.\n"));
             if (argv.lineas == true)
@@ -64,7 +64,7 @@ yargs.command({
  * @param entrada Datos de entrada que recibe el comando (si quiere contar lineas...).
  * @param nombreFichero Nombre del fichero que se quiere analizar.
  */
-function funcionConPipe(entrada, nombreFichero) {
+function conPipe(entrada, nombreFichero) {
     fs.access(nombreFichero, (err) => {
         if (err)
             console.log(chalk.rgb(255, 0, 0).inverse("\nERROR: El fichero que ha introducido no existe.\n"));
@@ -72,10 +72,10 @@ function funcionConPipe(entrada, nombreFichero) {
             let echo = child_process_1.spawn('echo', [`\nAbriendo el fichero: ${nombreFichero}\n`]);
             let wc = child_process_1.spawn('wc', [`${nombreFichero}`]);
             echo.stdout.pipe(process.stdout);
-            let output = '';
-            wc.stdout.on('data', (piece) => output += piece);
+            let wcOutput = '';
+            wc.stdout.on('data', (piece) => wcOutput += piece);
             wc.on('close', () => {
-                let outputArray = output.split(/\s+/);
+                let outputArray = wcOutput.split(/\s+/);
                 entrada.forEach((element) => {
                     if (element == "lineas") {
                         const echo = child_process_1.spawn('echo', [`El fichero contiene ${parseInt(outputArray[1]) + 1} líneas.\n`]);
@@ -95,21 +95,21 @@ function funcionConPipe(entrada, nombreFichero) {
     });
 }
 /**
- * Método igual que funcionConPipe pero sin hacer uso de pipe.
+ * Método igual que conPipe pero sin hacer uso de pipe.
  * @param entrada Datos de entrada que recibe el comando (si quiere contar lineas...).
  * @param nombreFichero Nombre del fichero que se quiere analizar.
  */
-function funcionSinPipe(entrada, nombreFichero) {
+function sinPipe(entrada, nombreFichero) {
     fs.access(nombreFichero, (err) => {
         if (err)
             console.log(chalk.rgb(255, 0, 0).inverse("\nERROR: El fichero que ha introducido no existe.\n"));
         else {
             let wc = child_process_1.spawn('wc', [`${nombreFichero}`]);
             console.log(`\n${nombreFichero}\n`);
-            let output = '';
-            wc.stdout.on('data', (piece) => output += piece);
+            let wcOutput = '';
+            wc.stdout.on('data', (piece) => wcOutput += piece);
             wc.on('close', () => {
-                const outputArray = output.split(/\s+/);
+                const outputArray = wcOutput.split(/\s+/);
                 entrada.forEach((element) => {
                     if (element == "lineas")
                         console.log(`El fichero contiene ${parseInt(outputArray[1]) + 1} líneas.\n`);
