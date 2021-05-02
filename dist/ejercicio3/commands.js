@@ -5,6 +5,12 @@ const chalk = require("chalk");
 const yargs = require("yargs");
 const note_app_1 = require("./note-app");
 //Programa principal
+/**
+ * @description Comando de Yargs para la opción add,
+ * el cual añade una nota nueva a la carpeta del
+ * usuario especificado. Este comando espera 4
+ * parámetros: user, title, body y color de la nota.
+ */
 yargs.command({
     command: 'add',
     describe: 'Add a new note',
@@ -36,7 +42,8 @@ yargs.command({
             if (fs.existsSync('./src/ejercicio/users')) {
                 if (!fs.existsSync(`./src/ejercicio/users/${argv.user}`)) {
                     fs.mkdirSync(`./src/ejercicio/users/${argv.user}`);
-                    console.log(chalk.rgb(45, 247, 17).inverse(`El usuario ${argv.user} no existía, se ha creado su carpeta.`));
+                    console.log(chalk.rgb(45, 247, 17).inverse(`El usuario ${argv.user}
+           no existía, se ha creado su carpeta.`));
                 }
                 if (fs.existsSync(`./src/ejercicio/users/${argv.user}/${argv.title}.json`)) {
                     console.log(chalk.rgb(255, 0, 0).inverse(`ERROR: Esa nota ya existe en el usuario ${argv.user}.`));
@@ -53,6 +60,11 @@ yargs.command({
         }
     },
 });
+/**
+ * @description Comando de Yargs para la opción list, el
+ * cual lista todos los títulos de las notas que posee un
+ * usuario. Este comando espera un único parámetro: user.
+ */
 yargs.command({
     command: 'list',
     describe: 'List all the notes',
@@ -67,12 +79,10 @@ yargs.command({
         if (typeof argv.user === 'string') {
             if (fs.existsSync('./src/ejercicio/users')) {
                 if (fs.existsSync(`./src/ejercicio/users/${argv.user}`)) {
-                    let directorios = fs.readdirSync(`./src/ejercicio/users/${argv.user}`);
-                    directorios.forEach(nombreFichero => {
+                    let directorio = fs.readdirSync(`./src/ejercicio/users/${argv.user}`);
+                    directorio.forEach(nombreFichero => {
                         let entrada = fs.readFileSync(`./src/ejercicio/users/${argv.user}/${nombreFichero}`);
                         let toJson = JSON.parse(entrada.toString());
-                        //let titulo: string = objeto.getTitle();
-                        //console.log(toJson.title);
                         switch (toJson.color) {
                             case 'red':
                                 console.log(chalk.red.inverse(toJson.title));
@@ -100,6 +110,11 @@ yargs.command({
         }
     },
 });
+/**
+ * @description Comando de Yargs para la opción read, el
+ * cual muestra el contenido completo de la nota especificada.
+ * Este comando espera 2 parámetros: user y title.
+ */
 yargs.command({
     command: 'read',
     describe: 'List the content of the note',
@@ -122,7 +137,6 @@ yargs.command({
                     if (fs.existsSync(`./src/ejercicio/users/${argv.user}/${argv.title}.json`)) {
                         let fichero = fs.readFileSync(`./src/ejercicio/users/${argv.user}/${argv.title}.json`);
                         let toJson = JSON.parse(fichero.toString());
-                        //let titulo: string = objeto.getTitle();
                         switch (toJson.color) {
                             case 'red':
                                 console.log(chalk.red.inverse(toJson.title));
@@ -156,6 +170,11 @@ yargs.command({
         }
     },
 });
+/**
+ * @description Comando de Yargs para la opción remove, el cual
+ * elimina una nota de la carpeta del usuario especificado.
+ * Este comando espera 2 parámetros: user y title.
+ */
 yargs.command({
     command: 'remove',
     describe: 'Remove a note',
@@ -190,6 +209,11 @@ yargs.command({
         }
     },
 });
+/**
+ * @description Comando de Yargs para la opción modify, el cual
+ * modifica la nota que se le especifique. Este comando espera 4
+ * parámetros: user, title, body y color de la nota.
+ */
 yargs.command({
     command: 'modify',
     describe: 'Modify a note',
