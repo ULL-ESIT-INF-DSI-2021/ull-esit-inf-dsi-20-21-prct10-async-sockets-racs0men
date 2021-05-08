@@ -5,6 +5,6 @@ import { RequestType } from "./types";
 export declare class client extends EventEmitter {
     puerto: number;
     constructor(puerto: number);
-    run(client: net.Socket): void;
+    run(cliente: net.Socket): void;
     request(req: RequestType): void;
 }

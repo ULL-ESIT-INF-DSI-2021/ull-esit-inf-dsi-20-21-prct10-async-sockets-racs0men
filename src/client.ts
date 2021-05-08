@@ -9,13 +9,13 @@ export class client extends EventEmitter {
     super()
   }
 
-  run(client: net.Socket) {
+  run(cliente: net.Socket) {
     let wholeData = '';
-    client.on('data', (dataChunk) => {
+    cliente.on('data', (dataChunk) => {
       wholeData += dataChunk;
     });
     
-    client.on('end', () => {
+    cliente.on('end', () => {
       const info = JSON.parse(wholeData)
       switch (info.type) {
         case 'add':
@@ -62,8 +62,8 @@ export class client extends EventEmitter {
   }
 
   request(req: RequestType) {
-    const client = net.connect({port: this.puerto});
-    client.write(JSON.stringify(req)+'\n');
-    this.run(client);
+    const cliente = net.connect({port: this.puerto});
+    cliente.write(JSON.stringify(req)+'\n');
+    this.run(cliente);
   }
 }

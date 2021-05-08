@@ -31,12 +31,12 @@ class client extends events_1.default {
         super();
         this.puerto = puerto;
     }
-    run(client) {
+    run(cliente) {
         let wholeData = '';
-        client.on('data', (dataChunk) => {
+        cliente.on('data', (dataChunk) => {
             wholeData += dataChunk;
         });
-        client.on('end', () => {
+        cliente.on('end', () => {
             const info = JSON.parse(wholeData);
             switch (info.type) {
                 case 'add':
@@ -82,9 +82,9 @@ class client extends events_1.default {
         });
     }
     request(req) {
-        const client = net.connect({ port: this.puerto });
-        client.write(JSON.stringify(req) + '\n');
-        this.run(client);
+        const cliente = net.connect({ port: this.puerto });
+        cliente.write(JSON.stringify(req) + '\n');
+        this.run(cliente);
     }
 }
 exports.client = client;

@@ -9,8 +9,8 @@ const chalk = require("chalk");
 export class server extends EventEmitter{
 	constructor(){
 		super();
-		const servidor = net.createServer((connect) => {
-			this.run(connect)
+		const servidor = net.createServer((connection) => {
+			this.run(connection)
 		})
 		servidor.listen(60300, () => {
       console.log(chalk.blue.inverse('Esperando la conexión de clientes.'));
