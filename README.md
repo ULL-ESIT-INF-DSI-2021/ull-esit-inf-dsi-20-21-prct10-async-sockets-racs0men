@@ -1,4 +1,4 @@
-# ull-esit-inf-dsi-20-21-prct09-async-fs-process-racs0men
+# ull-esit-inf-dsi-20-21-prct10-async-sockets-racs0men
 
-# Repositorio de la novena práctica de la asignatura DSI.
+# Repositorio de la decima práctica de la asignatura DSI.
 # Creado por Óscar Cigala Álvarez.
