@@ -14,4 +14,9 @@ export declare class Note {
      * @param color Color de la nota.
      */
     constructor(user: string, title: string, body: string, color: string);
+    /**
+     * Escribir la nota en formato JSON
+     * @returns Nota en formato JSON
+     */
+    write(): string;
 }

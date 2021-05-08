@@ -1,7 +1,10 @@
-import * as fs from 'fs';
-import * as chalk from 'chalk';
 import * as yargs from 'yargs';
-import { Note } from './note-app'
+import { client } from './client';
+import { RequestType } from "./types";
+
+
+const cliente = new client(60300);
+let req: RequestType = {};
 
 //Programa principal
 
@@ -38,26 +41,8 @@ yargs.command({
   },
   handler(argv) {
     if ((typeof argv.user === 'string') && (typeof argv.title === 'string') &&
-        (typeof argv.body === 'string') && (typeof argv.color === 'string')) {
-      if (fs.existsSync('./src/ejercicio/users')) {
-        if (!fs.existsSync(`./src/ejercicio/users/${argv.user}`)) {
-          fs.mkdirSync(`./src/ejercicio/users/${argv.user}`);
-          console.log(chalk.rgb(45, 247, 17).inverse(`El usuario ${argv.user}
-           no existía, se ha creado su carpeta.`));
-        }
-        if (fs.existsSync(`./src/ejercicio/users/${argv.user}/${argv.title}.json`)) {
-          console.log(chalk.rgb(255, 0, 0).inverse(`ERROR: Esa nota ya existe en el usuario ${argv.user}.`));
-        }
-        else {
-          let nota1: Note = new Note(argv.user, argv.title, argv.body, argv.color);
-          let aux = JSON.stringify(nota1); //aux ahora es nota1.json
-          fs.writeFileSync(`./src/ejercicio/users/${argv.user}/${argv.title}.json`, aux);
-          console.log(chalk.rgb(45, 247, 17).inverse(`Nota ${argv.title} creada correctamente.`));
-        }
-      }
-      else
-        console.log(chalk.rgb(255, 0, 0).inverse("ERROR: No existe el directorio users."));
-    }
+      (typeof argv.body === 'string') && (typeof argv.color === 'string'))
+      req = {type: 'add', user: argv.user, title: argv.title, body: argv.body, color: argv.color};
   },
 });
 
@@ -77,39 +62,8 @@ yargs.command({
     },
   },
   handler(argv) {
-    if (typeof argv.user === 'string') {
-      if (fs.existsSync('./src/ejercicio/users')) {
-        if (fs.existsSync(`./src/ejercicio/users/${argv.user}`)) {
-          let directorio = fs.readdirSync(`./src/ejercicio/users/${argv.user}`);
-          directorio.forEach(nombreFichero => {
-            let entrada = fs.readFileSync(`./src/ejercicio/users/${argv.user}/${nombreFichero}`);
-            let toJson: Note = JSON.parse(entrada.toString());
-
-            switch (toJson.color) {
-              case 'red':
-                console.log(chalk.red.inverse(toJson.title));
-                break;
-              case 'blue':
-                console.log(chalk.blue.inverse(toJson.title));
-                break;
-              case 'yellow':
-                console.log(chalk.yellow.inverse(toJson.title));
-                break;
-              case 'green':
-                console.log(chalk.green.inverse(toJson.title));
-                break;
-              default:
-                console.log(chalk.rgb(255, 0, 0).inverse(`ERROR: No existe el color ${toJson.color}.`));
-                break;  
-            }
-          });
-        }
-        else
-          console.log(chalk.rgb(255, 0, 0).inverse(`ERROR: El usuario ${argv.user} no existe.`));
-      }
-      else
-        console.log(chalk.rgb(255, 0, 0).inverse("ERROR: No existe el directorio users."));
-    }
+    if (typeof argv.user === 'string')
+      req = {type: 'list', user: argv.user};
   },
 });
 
@@ -134,44 +88,8 @@ yargs.command({
     },
   },
   handler(argv) {
-    if ((typeof argv.user === 'string') && (typeof argv.title === 'string')) {
-      if (fs.existsSync('./src/ejercicio/users')) {
-        if (fs.existsSync(`./src/ejercicio/users/${argv.user}`)) {
-          if (fs.existsSync(`./src/ejercicio/users/${argv.user}/${argv.title}.json`)) {
-            let fichero = fs.readFileSync(`./src/ejercicio/users/${argv.user}/${argv.title}.json`);
-            let toJson: Note = JSON.parse(fichero.toString());
-
-            switch (toJson.color) {
-              case 'red':
-                console.log(chalk.red.inverse(toJson.title));
-                console.log(chalk.red.inverse(toJson.body));
-                break;
-              case 'blue':
-                console.log(chalk.blue.inverse(toJson.title));
-                console.log(chalk.blue.inverse(toJson.body));
-                break;
-              case 'yellow':
-                console.log(chalk.yellow.inverse(toJson.title));
-                console.log(chalk.yellow.inverse(toJson.body));
-                break;
-              case 'green':
-                console.log(chalk.green.inverse(toJson.title));
-                console.log(chalk.green.inverse(toJson.body));
-                break;
-              default:
-                console.log(chalk.rgb(255, 0, 0).inverse(`ERROR: No existe el color ${toJson.color}.`));
-                break;  
-            }
-          }
-          else
-            console.log(chalk.rgb(255, 0, 0).inverse(`ERROR: La nota ${argv.title} no existe.`));
-        }
-        else 
-          console.log(chalk.rgb(255, 0, 0).inverse(`ERROR: El usuario ${argv.user} no existe.`));
-      }
-      else
-        console.log(chalk.rgb(255, 0, 0).inverse("ERROR: No existe el directorio users."));
-    }
+    if ((typeof argv.user === 'string') && (typeof argv.title === 'string'))
+      req = {type: 'read', user: argv.user, title: argv.title};
   },
 });
 
@@ -196,22 +114,8 @@ yargs.command({
     },
   },
   handler(argv) {
-    if ((typeof argv.user === 'string') && (typeof argv.title === 'string')) {
-      if (fs.existsSync('./src/ejercicio/users')) {
-        if (fs.existsSync(`./src/ejercicio/users/${argv.user}`)) {
-          if (fs.existsSync(`./src/ejercicio/users/${argv.user}/${argv.title}.json`)) {
-            fs.rmSync(`./src/ejercicio/users/${argv.user}/${argv.title}.json`);
-            console.log(chalk.rgb(45, 247, 17).inverse(`La nota ${argv.title} ha sido eliminada correctamente.`));
-          }
-          else
-            console.log(chalk.rgb(255, 0, 0).inverse(`ERROR: La nota ${argv.title} no existe.`));
-        }
-        else 
-          console.log(chalk.rgb(255, 0, 0).inverse(`ERROR: El usuario ${argv.user} no existe.`));
-      }
-      else
-        console.log(chalk.rgb(255, 0, 0).inverse("ERROR: No existe el directorio users."));
-    }
+    if ((typeof argv.user === 'string') && (typeof argv.title === 'string'))
+      req = {type: 'remove', user: argv.user, title: argv.title};
   },
 });
 
@@ -247,25 +151,9 @@ yargs.command({
   },
   handler(argv) {
     if ((typeof argv.user === 'string') && (typeof argv.title === 'string') &&
-        (typeof argv.body === 'string') && (typeof argv.color === 'string')) {
-      if (fs.existsSync('./src/ejercicio/users')) {
-        if (fs.existsSync(`./src/ejercicio/users/${argv.user}`)) {
-          if (fs.existsSync(`./src/ejercicio/users/${argv.user}/${argv.title}.json`)) {
-            fs.rmSync(`./src/ejercicio/users/${argv.user}/${argv.title}.json`);
-            let nota1: Note = new Note(argv.user, argv.title, argv.body, argv.color);
-            let aux = JSON.stringify(nota1); //aux ahora es nota1.json
-            fs.writeFileSync(`./src/ejercicio/users/${argv.user}/${argv.title}.json`, aux);
-
-            console.log(chalk.rgb(45, 247, 17).inverse(`La nota ${argv.title} ha sido modificada correctamente.`));
-          }
-          else
-            console.log(chalk.rgb(255, 0, 0).inverse(`ERROR: La nota ${argv.title} no existe.`));
-        }
-        else 
-          console.log(chalk.rgb(255, 0, 0).inverse(`ERROR: El usuario ${argv.user} no existe.`));
-      }
-      else
-        console.log(chalk.rgb(255, 0, 0).inverse("ERROR: No existe el directorio users."));
-    }
+      (typeof argv.body === 'string') && (typeof argv.color === 'string'))
+      req = {type: 'modify', user: argv.user, title: argv.title, body: argv.body, color: argv.color};
   },
 }).parse();
+
+cliente.request(req);

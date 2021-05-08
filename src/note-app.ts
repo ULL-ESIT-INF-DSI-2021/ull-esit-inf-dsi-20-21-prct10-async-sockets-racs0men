@@ -21,5 +21,13 @@
     this.body = body;
     this.color = color;
   }
-}
 
+  /**
+   * Escribir la nota en formato JSON
+   * @returns Nota en formato JSON
+   */
+  public write():string {
+    return '{\n\"title\": \"' + this.title + '\",\n\"body\": \"'+ this.body +
+    '\",\n\"color\": \"' + this.color + '\"\n}';
+  }
+}
